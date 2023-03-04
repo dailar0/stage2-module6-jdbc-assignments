@@ -36,7 +36,8 @@ public class SimpleJDBCRepository {
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             id = resultSet.getLong(1);
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return id;
     }
@@ -49,7 +50,8 @@ public class SimpleJDBCRepository {
             if (resultSet.next()) {
                 return parseUser(resultSet);
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -62,7 +64,8 @@ public class SimpleJDBCRepository {
             if (resultSet.next()) {
                 return parseUser(resultSet);
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -76,7 +79,8 @@ public class SimpleJDBCRepository {
                 User user = parseUser(resultSet);
                 users.add(user);
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return users;
     }
@@ -91,7 +95,8 @@ public class SimpleJDBCRepository {
 
             preparedStatement.executeUpdate();
 
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return findUserById(user.getId());
     }
@@ -101,7 +106,8 @@ public class SimpleJDBCRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(deleteUser);
             preparedStatement.setLong(1, userId);
             preparedStatement.execute();
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
