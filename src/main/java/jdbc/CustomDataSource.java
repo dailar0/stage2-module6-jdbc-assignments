@@ -2,11 +2,10 @@ package jdbc;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -23,14 +22,15 @@ public class CustomDataSource implements DataSource {
     private final String password;
     private final CustomConnector connector = new CustomConnector();
 
+    @SneakyThrows
     private CustomDataSource() {
         Properties properties;
-        String fileName = "app.properties";
-        try (FileInputStream fileInputStream = new FileInputStream(fileName)){
+
+        try (InputStream resource = getClass().getClassLoader().getResourceAsStream("app.properties")) {
             properties = new Properties();
-            properties.load(fileInputStream);
+            properties.load(resource);
         } catch (IOException e) {
-            throw new RuntimeException("can't find " + fileName);
+            throw new RuntimeException(e);
         }
 
         url = properties.getProperty("postgres.url");
@@ -58,7 +58,7 @@ public class CustomDataSource implements DataSource {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return connector.getConnection(url);
+        return connector.getConnection(url,name,password);
     }
 
     @Override
