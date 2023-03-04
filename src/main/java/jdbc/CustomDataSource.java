@@ -22,7 +22,6 @@ public class CustomDataSource implements DataSource {
     private final String password;
     private final CustomConnector connector = new CustomConnector();
 
-    @SneakyThrows
     private CustomDataSource() {
         Properties properties;
 
@@ -37,19 +36,8 @@ public class CustomDataSource implements DataSource {
         name = properties.getProperty("postgres.name");
         password = properties.getProperty("postgres.password");
         driver = properties.getProperty("postgres.driver");
-        //init();
     }
 
-    private void init() {
-        try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement("drop database if exists myfirstdb; create database myfirstdb; " +
-                    "CREATE TABLE if not exists myusers (id bigint unique GENERATED ALWAYS AS IDENTITY, firstname text,lastname text,age smallint);");
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 
     public static CustomDataSource getInstance() {
         return instance;
