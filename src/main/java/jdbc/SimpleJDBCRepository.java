@@ -19,7 +19,7 @@ public class SimpleJDBCRepository {
 
     private DataSource dataSource = CustomDataSource.getInstance();
 
-    private static final String createUserSQL = "insert into myusers (firstname,lastname,age) values(?,?,?) returning id";
+    private static final String createUserSQL = "insert into myusers (firstname,lastname,age) values(?,?,?)";
     private static final String updateUserSQL = "update myusers set firstname=?,lastname=?,age=? where id=?";
     private static final String deleteUser = "delete from myusers where id=?";
     private static final String findUserByIdSQL = "select * from myusers where id=?";
@@ -29,11 +29,11 @@ public class SimpleJDBCRepository {
     public Long createUser(User user) {
         long id = 0;
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(createUserSQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(createUserSQL,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setInt(3, user.getAge());
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             id = resultSet.getLong(1);
         } catch (SQLException ignored) {
