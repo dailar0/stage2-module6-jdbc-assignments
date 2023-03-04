@@ -96,7 +96,7 @@ public class SimpleJDBCRepository {
         return findUserById(user.getId());
     }
 
-    private void deleteUser(Long userId) {
+    public void deleteUser(Long userId) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(deleteUser);
             preparedStatement.setLong(1, userId);
@@ -106,7 +106,7 @@ public class SimpleJDBCRepository {
     }
 
 
-    public static User parseUser(ResultSet resultSet) throws SQLException {
+    private static User parseUser(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(1);
         String firstName = resultSet.getString(2);
         String lastName = resultSet.getString(3);
