@@ -106,7 +106,7 @@ public class SimpleJDBCRepository {
     }
 
 
-    private static User parseUser(ResultSet resultSet) throws SQLException {
+    public static User parseUser(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(1);
         String firstName = resultSet.getString(2);
         String lastName = resultSet.getString(3);
