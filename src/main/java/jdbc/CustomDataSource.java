@@ -26,8 +26,7 @@ public class CustomDataSource implements DataSource {
     private CustomDataSource() {
         Properties properties;
         String fileName = "app.properties";
-        try {
-            FileInputStream fileInputStream = new FileInputStream(fileName);
+        try (FileInputStream fileInputStream = new FileInputStream(fileName)){
             properties = new Properties();
             properties.load(fileInputStream);
         } catch (IOException e) {
@@ -38,7 +37,7 @@ public class CustomDataSource implements DataSource {
         name = properties.getProperty("postgres.name");
         password = properties.getProperty("postgres.password");
         driver = properties.getProperty("postgres.driver");
-        init();
+        //init();
     }
 
     private void init() {
